@@ -3,17 +3,30 @@ import Header from './Components/Header'
 import Tasks from './Components/Tasks'
 import AddTask from './Components/AddTask'
 
+/* App is like the main class, that controls all the other classes */
+
 const App = () => {
   const [showAddTask, setShowAddTask] = useState(false)  
 
   const [tasks, setTasks] = useState([])
 
+  // async makes a function wait for a promise
+  // await makes a function wait for a promise
+  // a promise is a normal function, that can be successful,
+  // or have an error during execution
+
+  /**
+   * promise => 
+   * myFunction().then( 
+   *    function(value) { code if promise is successful}
+   *    function(error) { code if there is some error}
+   * );
+   */
   useEffect(() => {
     const getTasks = async () => {
       const tasksFromServer = await fetchTasks()
       setTasks(tasksFromServer)
     }
-
     getTasks()
   }, [])
 
@@ -21,15 +34,13 @@ const App = () => {
   const fetchTasks = async() => {
     const res = await fetch('http://localhost:5000/tasks')
     const data = await res.json()  
-
     return data   
   }
 
   // Fetch data from a task   
   const fetchTask = async(id) => {
-    const res = await fetch('http://localhost:5000/tasks/${id}')
+    const res = await fetch(`http://localhost:5000/tasks/${id}`)
     const data = await res.json()  
-
     return data   
   }
 
@@ -49,8 +60,8 @@ const App = () => {
 
   // Delete task        
   const deleteTask = async (id) => {
-    await fetch(`http://localhost:5000/tasks/$
-    {id}`, { 
+    await fetch(`http://localhost:5000/tasks/${id}`, 
+    { 
       method: 'DELETE'
     })
 
@@ -63,7 +74,7 @@ const App = () => {
     const updTask = {...taskToToggle, 
     reminder: !taskToToggle.reminder }
 
-    const res = await fetch('http://localhost:5000/tasks/${id}', {
+    const res = await fetch(`http://localhost:5000/tasks/${id}`, {
       method: 'PUT', 
       headers: { 
       'Content-Type': 'application/json'
@@ -82,17 +93,22 @@ const App = () => {
   }
 
   return (
-    <div className="container">
-      <Header 
-        onAdd={() => setShowAddTask
-        (!showAddTask)}
-        showAdd={showAddTask}
-      /> {
-        showAddTask && <AddTask onAdd={addTask}/>
-      }
-      {tasks.length > 0 ? (
-        <Tasks tasks={tasks} onDelete=
-        {deleteTask} onToggle={toggleReminder} />) : ('No Tasks To Show')}
+    <div>
+      <h1 class="heading">
+        Project 05
+      </h1>
+      <div className="container">
+        <Header 
+          onAdd={() => setShowAddTask
+          (!showAddTask)}
+          showAdd={showAddTask}
+        /> {
+          showAddTask && <AddTask onAdd={addTask}/>
+        }
+        {tasks.length > 0 ? (
+          <Tasks tasks={tasks} onDelete=
+          {deleteTask} onToggle={toggleReminder} />) : ('No Tasks To Show')}
+      </div>
     </div>
   );
 }
