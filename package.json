@@ -1,5 +1,6 @@
 {
   "name": "react-task-tracker",
+  "homepage": "https://waynium.github.io/Task-Tracker-Learning-Tutorial",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
